@@ -16,6 +16,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import static android.app.PendingIntent.FLAG_IMMUTABLE;
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 import static open.com.permissionsmanager.ValidatePermissionsBroadcastReceiver.GENERIC_REQUEST_CODE;
 
@@ -43,10 +44,11 @@ public class Utils {
         return new Intent(context.getApplicationContext(), ValidatePermissionsBroadcastReceiver.class)
                     .setAction(SCAN);
     }
-    public static boolean shouldSetAlarm(Context context) {
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, GENERIC_REQUEST_CODE, getIntentToBroadcastValidatePermissions(context), PendingIntent.FLAG_NO_CREATE);
-        return pendingIntent == null || hasItBeenAlarmIntervalSinceLastAlarm(context);
-    }
+//    not being used anymore. we need to check for flag_immutable before starting to use this code
+//    public static boolean shouldSetAlarm(Context context) {
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, GENERIC_REQUEST_CODE, getIntentToBroadcastValidatePermissions(context), PendingIntent.FLAG_NO_CREATE);
+//        return pendingIntent == null || hasItBeenAlarmIntervalSinceLastAlarm(context);
+//    }
 
     private static boolean hasItBeenAlarmIntervalSinceLastAlarm(Context context) {
         return (getSharedPreferences(context).getLong("SHARED_PREFERENCES_KEY_LAST_ALARM_TIME", 0)  + ALARM_INTERVAL) <  System.currentTimeMillis();
@@ -54,7 +56,7 @@ public class Utils {
 
     public static void setAlarm(Context context) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, GENERIC_REQUEST_CODE, getIntentToBroadcastValidatePermissions(context), FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, GENERIC_REQUEST_CODE, getIntentToBroadcastValidatePermissions(context), FLAG_UPDATE_CURRENT| FLAG_IMMUTABLE);
         alarmManager.cancel(pendingIntent);
         alarmManager.setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + ALARM_INTERVAL, pendingIntent);
         // Calendar calInstance = Calendar.getInstance();

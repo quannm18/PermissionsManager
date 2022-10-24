@@ -11,6 +11,7 @@ import android.media.RingtoneManager;
 import java.util.Calendar;
 import java.util.Date;
 
+import static android.app.PendingIntent.FLAG_IMMUTABLE;
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 import static java.util.Calendar.MONTH;
 import static open.com.permissionsmanager.Utils.ONE_MINUTE;
@@ -86,7 +87,7 @@ public class ValidatePermissionsBroadcastReceiver extends BroadcastReceiver{
                 .setContentTitle(context.getString(R.string.attention))
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setContentIntent(PendingIntent.getActivity(context, GENERIC_REQUEST_CODE, new Intent(context, MainActivity.class), FLAG_UPDATE_CURRENT))
+                .setContentIntent(PendingIntent.getActivity(context, GENERIC_REQUEST_CODE, new Intent(context, MainActivity.class), FLAG_UPDATE_CURRENT | FLAG_IMMUTABLE))
                 .build();
         System.out.println("notifying on usual scan results yolo");
         notificationManager.notify(FOUR_HOURLY_SCAN_RESULT_NOTIICATION_CODE, notification);
@@ -100,7 +101,7 @@ public class ValidatePermissionsBroadcastReceiver extends BroadcastReceiver{
                 .setContentTitle(context.getString(R.string.attention))
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setContentIntent(PendingIntent.getActivity(context, GENERIC_REQUEST_CODE, new Intent(context, MainActivity.class), FLAG_UPDATE_CURRENT))
+                .setContentIntent(PendingIntent.getActivity(context, GENERIC_REQUEST_CODE, new Intent(context, MainActivity.class), FLAG_UPDATE_CURRENT | FLAG_IMMUTABLE))
                 .build();
         System.out.println("notifying on ignored apps");
         notificationManager.notify(GENERIC_REQUEST_CODE, notification);
